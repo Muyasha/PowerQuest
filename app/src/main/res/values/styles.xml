@@ -1,0 +1,7 @@
+<resources>
+    <style name="BottomNavigationStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemIconTint">@color/bottom_nav_icon_colors</item>
+        <item name="itemTextColor">@color/white</item>
+        <item name="backgroundTint">@color/purple_100</item>
+    </style>
+</resources>
