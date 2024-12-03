@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,38 +7,29 @@
     android:background="@color/purple_blue"
     tools:context=".Quest">
 
-    <!-- Tab Bar -->
-    <LinearLayout
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/purple_blue"
+        app:tabTextColor="@color/white">
 
-        <TextView
-            android:id="@+id/tab_daily"
-            android:layout_width="0dp"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="Daily"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:text="Daily" />
 
-        <TextView
-            android:id="@+id/tab_custom"
-            android:layout_width="0dp"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="16dp"
-            android:text="Custom"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:text="Custom" />
 
-    <!-- Content Container -->
-    <FrameLayout
-        android:id="@+id/content_container"
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:id="@+id/view_pager"/>
+
 </LinearLayout>

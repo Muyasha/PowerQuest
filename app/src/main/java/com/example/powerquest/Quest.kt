@@ -4,56 +4,54 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class Quest : Fragment() {
+
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: androidx.viewpager2.widget.ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_quest, container, false)
 
-        // Referensi komponen dari XML
-        val tabDaily: TextView = view.findViewById(R.id.tab_daily)
-        val tabCustom: TextView = view.findViewById(R.id.tab_custom)
-        val contentContainer: ViewGroup = view.findViewById(R.id.content_container)
+        // Hubungkan TabLayout dan ViewPager2
+        tabLayout = view.findViewById(R.id.tab_layout)
+        viewPager = view.findViewById(R.id.view_pager)
 
-        // Fungsi untuk mengganti layout dalam FrameLayout
-        fun switchContent(layoutResId: Int) {
-            val newView = LayoutInflater.from(requireContext()).inflate(layoutResId, contentContainer, false)
-            contentContainer.removeAllViews() // Hapus konten lama
-            contentContainer.addView(newView) // Tambahkan konten baru
-        }
+        // Atur Adapter ViewPager2
+        val adapter = ViewPagerAdapter(requireActivity())
+        viewPager.adapter = adapter
+        viewPager.offscreenPageLimit = 1
 
-        // Set default tab sebagai Daily
-        switchContent(R.layout.fragment_daily)
-
-        // Atur onClickListener untuk tab Daily
-        tabDaily.setOnClickListener {
-            switchContent(R.layout.fragment_daily)
-
-            // Tambahkan gaya untuk menandai tab aktif
-            tabDaily.setTextColor(resources.getColor(R.color.white, null))
-            tabCustom.setTextColor(resources.getColor(R.color.purple, null))
-        }
-
-        // Atur onClickListener untuk tab Custom
-        tabCustom.setOnClickListener {
-            switchContent(R.layout.fragment_custom)
-
-            // Tambahkan gaya untuk menandai tab aktif
-            tabCustom.setTextColor(resources.getColor(R.color.white, null))
-            tabDaily.setTextColor(resources.getColor(R.color.purple, null))
-        }
+        // Integrasikan TabLayout dengan ViewPager2
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Daily"
+                1 -> "Custom"
+                else -> null
+            }
+        }.attach()
 
         return view
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = Quest()
+    // Adapter untuk mengelola fragment di ViewPager2
+    class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+        override fun getItemCount(): Int = 2 // Jumlah tab (Daily dan Custom)
+
+        override fun createFragment(position: Int): Fragment {
+            return when (position) {
+                0 -> DailyFragment()   // Fragment untuk Daily
+                1 -> CustomFragment()  // Fragment untuk Custom
+                else -> throw IllegalArgumentException("Invalid position")
+            }
+        }
     }
 }

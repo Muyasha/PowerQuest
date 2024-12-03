@@ -8,7 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.powerquest.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
@@ -18,21 +17,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+        // Tampilkan fragment Quest secara default
         replaceFragment(Quest())
+
+        // Item "Quest" aktif di BottomNavigationView
+        binding.bottomNavigationView.selectedItemId = R.id.quest
+
+        // Atur padding untuk system bars (jika diperlukan)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+        // Navigasi antar-fragment
         binding.bottomNavigationView.setOnItemSelectedListener {
-            when(it.itemId){
+            when(it.itemId) {
                 R.id.quest -> replaceFragment(Quest())
                 R.id.profile -> replaceFragment(Profile())
                 R.id.statistic -> replaceFragment(Statistic())
-                else ->{
-
-                }
+                else -> {}
             }
             true
         }
